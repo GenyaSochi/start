@@ -1,75 +1,33 @@
-# Nuxt Minimal Starter
+# START Project
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a Nuxt 3 project with a modern design.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- Modern rocket logo in blue-white tones with red flame
+- Clean, concise Inter font for headings and navigation
+- Global CSS stylesheet for consistent styling
 
-```bash
-# npm
-npm install
+## Development
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+To start the development server:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+This will start the server at http://localhost:3000
 
-Build the application for production:
+## Build
+
+To build for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+To preview the production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
