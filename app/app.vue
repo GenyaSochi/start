@@ -1,5 +1,7 @@
 <template>
+  <div class="stars-bright"></div>
   <HeaderComponenet />
-    <NuxtPage />
+  <MainBlock />
+  <NuxtPage />
   <FooterComponenet />
 </template>

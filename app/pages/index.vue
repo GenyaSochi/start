@@ -1,4 +1,3 @@
-<template> 
-
-  Page index
+<template>
+  <div></div>
 </template>

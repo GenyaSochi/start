@@ -1,16 +1,165 @@
 /* Global styles */
-:root {
-  --primary-color: #ff0000;
-  --secondary-color: #4A90E2;
-  --background-color: #fff;
-  --text-color: #000;
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes twinkle-slow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes twinkle-fast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.1; }
 }
 
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  color: #e0e0e0;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Мелкие звёзды — слой 1 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  background: transparent;
+  box-shadow:
+    10vw 5vh 0 0 rgba(255,255,255,0.8),
+    20vw 15vh 0 0 rgba(255,255,255,0.6),
+    35vw 8vh 0 0 rgba(255,255,255,0.9),
+    50vw 20vh 0 0 rgba(255,255,255,0.5),
+    65vw 12vh 0 0 rgba(255,255,255,0.7),
+    80vw 3vh 0 0 rgba(255,255,255,0.6),
+    90vw 18vh 0 0 rgba(255,255,255,0.8),
+    5vw 25vh 0 0 rgba(255,255,255,0.5),
+    15vw 30vh 0 0 rgba(255,255,255,0.7),
+    25vw 35vh 0 0 rgba(255,255,255,0.4),
+    40vw 28vh 0 0 rgba(255,255,255,0.9),
+    55vw 33vh 0 0 rgba(255,255,255,0.6),
+    70vw 38vh 0 0 rgba(255,255,255,0.8),
+    85vw 27vh 0 0 rgba(255,255,255,0.5),
+    95vw 32vh 0 0 rgba(255,255,255,0.7),
+    8vw 42vh 0 0 rgba(255,255,255,0.6),
+    22vw 48vh 0 0 rgba(255,255,255,0.8),
+    38vw 45vh 0 0 rgba(255,255,255,0.5),
+    48vw 50vh 0 0 rgba(255,255,255,0.9),
+    62vw 43vh 0 0 rgba(255,255,255,0.7),
+    75vw 52vh 0 0 rgba(255,255,255,0.4),
+    88vw 47vh 0 0 rgba(255,255,255,0.6),
+    3vw 55vh 0 0 rgba(255,255,255,0.8),
+    18vw 60vh 0 0 rgba(255,255,255,0.5),
+    32vw 58vh 0 0 rgba(255,255,255,0.7),
+    45vw 65vh 0 0 rgba(255,255,255,0.9),
+    58vw 62vh 0 0 rgba(255,255,255,0.6),
+    72vw 68vh 0 0 rgba(255,255,255,0.8),
+    82vw 57vh 0 0 rgba(255,255,255,0.5),
+    92vw 63vh 0 0 rgba(255,255,255,0.7),
+    12vw 72vh 0 0 rgba(255,255,255,0.4),
+    28vw 75vh 0 0 rgba(255,255,255,0.6),
+    42vw 70vh 0 0 rgba(255,255,255,0.8),
+    52vw 78vh 0 0 rgba(255,255,255,0.5),
+    68vw 73vh 0 0 rgba(255,255,255,0.9),
+    78vw 80vh 0 0 rgba(255,255,255,0.7),
+    93vw 76vh 0 0 rgba(255,255,255,0.6),
+    7vw 85vh 0 0 rgba(255,255,255,0.8),
+    23vw 88vh 0 0 rgba(255,255,255,0.5),
+    37vw 82vh 0 0 rgba(255,255,255,0.7),
+    47vw 90vh 0 0 rgba(255,255,255,0.4),
+    63vw 87vh 0 0 rgba(255,255,255,0.6),
+    73vw 92vh 0 0 rgba(255,255,255,0.8),
+    87vw 83vh 0 0 rgba(255,255,255,0.5),
+    97vw 90vh 0 0 rgba(255,255,255,0.7),
+    13vw 95vh 0 0 rgba(255,255,255,0.9),
+    33vw 93vh 0 0 rgba(255,255,255,0.6),
+    53vw 97vh 0 0 rgba(255,255,255,0.8),
+    67vw 95vh 0 0 rgba(255,255,255,0.5),
+    83vw 98vh 0 0 rgba(255,255,255,0.7);
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* Средние звёзды — слой 2 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  pointer-events: none;
+  background: transparent;
+  box-shadow:
+    17vw 9vh 0 0 rgba(255,255,255,0.9),
+    43vw 14vh 0 0 rgba(255,255,255,0.7),
+    67vw 7vh 0 0 rgba(255,255,255,0.8),
+    83vw 22vh 0 0 rgba(255,255,255,0.6),
+    12vw 37vh 0 0 rgba(255,255,255,0.9),
+    37vw 40vh 0 0 rgba(255,255,255,0.7),
+    57vw 35vh 0 0 rgba(255,255,255,0.8),
+    77vw 44vh 0 0 rgba(255,255,255,0.6),
+    27vw 53vh 0 0 rgba(255,255,255,0.9),
+    47vw 57vh 0 0 rgba(255,255,255,0.7),
+    67vw 55vh 0 0 rgba(255,255,255,0.8),
+    87vw 60vh 0 0 rgba(255,255,255,0.6),
+    7vw 67vh 0 0 rgba(255,255,255,0.9),
+    33vw 72vh 0 0 rgba(255,255,255,0.7),
+    53vw 68vh 0 0 rgba(255,255,255,0.8),
+    73vw 77vh 0 0 rgba(255,255,255,0.6),
+    17vw 82vh 0 0 rgba(255,255,255,0.9),
+    43vw 85vh 0 0 rgba(255,255,255,0.7),
+    63vw 80vh 0 0 rgba(255,255,255,0.8),
+    93vw 88vh 0 0 rgba(255,255,255,0.6),
+    27vw 10vh 0 0 rgba(255,255,255,0.7),
+    53vw 5vh 0 0 rgba(255,255,255,0.8),
+    73vw 25vh 0 0 rgba(255,255,255,0.6),
+    97vw 42vh 0 0 rgba(255,255,255,0.9),
+    3vw 48vh 0 0 rgba(255,255,255,0.7),
+    23vw 65vh 0 0 rgba(255,255,255,0.8),
+    43vw 92vh 0 0 rgba(255,255,255,0.6),
+    83vw 70vh 0 0 rgba(255,255,255,0.9),
+    37vw 25vh 0 0 rgba(255,255,255,0.7),
+    77vw 90vh 0 0 rgba(255,255,255,0.8);
+  border-radius: 50%;
+  animation: twinkle-slow 5s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* Крупные яркие звёзды — отдельный слой */
+.stars-bright {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  pointer-events: none;
+  background: transparent;
+  box-shadow:
+    25vw 12vh 0 0 rgba(255,255,255,1),
+    55vw 22vh 0 0 rgba(255,255,255,0.9),
+    85vw 35vh 0 0 rgba(255,255,255,1),
+    15vw 50vh 0 0 rgba(255,255,255,0.9),
+    45vw 60vh 0 0 rgba(255,255,255,1),
+    75vw 72vh 0 0 rgba(255,255,255,0.9),
+    35vw 85vh 0 0 rgba(255,255,255,1),
+    65vw 45vh 0 0 rgba(255,255,255,0.9),
+    95vw 55vh 0 0 rgba(255,255,255,1),
+    5vw 75vh 0 0 rgba(255,255,255,0.9);
+  border-radius: 50%;
+  animation: twinkle-fast 2s ease-in-out infinite;
+  z-index: -1;
 }
 
 a {

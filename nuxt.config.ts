@@ -5,5 +5,6 @@ export default defineNuxtConfig({
     serverAppConfig: false
   },
   devtools: { enabled: true },
+  css: ['~/assets/style.css'],
   modules: ['@nuxt/fonts', '@nuxt/image']
 })
