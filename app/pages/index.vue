@@ -1,3 +1,6 @@
 <template>
-  <div></div>
+  <MainBlock />
 </template>
+
+<style scoped>
+</style>

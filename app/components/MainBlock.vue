@@ -5,22 +5,21 @@
       которые помогают компаниям расти и привлекать клиентов
     </p>
     <div class="buttons-grid">
-    <button class="but1"><span>Интернет магазин</span></button>
-    <button class="but2"><span>Сайт для ресторана или кафе с меню и бронированием</span></button>
-    <button class="but3"><span>Сайт для медицинского центра c записью онлайн</span></button>
-    <button class="but1"><span>Одностраничный сайт для запуска продукта с высокой конверсией</span></button>
-    <button class="but2"><span>Корпоративный имиджевый сайт с презентацией</span></button>
-    <button class="but3"><span>Портал недвижимости c каталогом объектов</span></button>
-    <button class="but1"><span>Сайт для салона красоты c портфолио мастеров и онлайн-записью</span></button>
+      <NuxtLink to="/store" class="but1"><span>Интернет магазин</span></NuxtLink>
+      <button class="but2"><span>Сайт для ресторана или кафе с меню и бронированием</span></button>
+      <button class="but3"><span>Сайт для медицинского центра c записью онлайн</span></button>
+      <button class="but1"><span>Одностраничный сайт для запуска продукта с высокой конверсией</span></button>
+      <button class="but2"><span>Корпоративный имиджевый сайт с презентацией</span></button>
+      <button class="but3"><span>Портал недвижимости c каталогом объектов</span></button>
+      <button class="but1"><span>Сайт для салона красоты c портфолио мастеров и онлайн-записью</span></button>
     </div>
   </section>
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 
 .start-description {
-  font-family: 'Inter', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(200,220,255,0.8), rgba(255,255,255,0.7));
@@ -73,6 +72,8 @@
   text-align: center;
   line-height: 1.3;
   overflow: hidden;
+  flex: 0 1 283px;
+  box-sizing: border-box;
 }
 
 /* Вращающийся градиент — под кнопкой */

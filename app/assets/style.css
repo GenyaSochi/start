@@ -1,5 +1,3 @@
-/* Global styles */
-
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
@@ -25,7 +23,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Мелкие звёзды — слой 1 */
 body::before {
   content: '';
   position: fixed;
@@ -91,7 +88,7 @@ body::before {
   z-index: -1;
 }
 
-/* Средние звёзды — слой 2 */
+
 body::after {
   content: '';
   position: fixed;
@@ -137,7 +134,7 @@ body::after {
   z-index: -1;
 }
 
-/* Крупные яркие звёзды — отдельный слой */
+
 .stars-bright {
   position: fixed;
   top: 0;
