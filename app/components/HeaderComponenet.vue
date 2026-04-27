@@ -21,12 +21,20 @@
         <NuxtLink to="/contacts">Контакты</NuxtLink>
       </nav>
 
-      <button class="header-but" @click="">
+      <button class="header-but" @click="showModal = true">
         Связаться
       </button>
     </div>
+
+    <ContactModal v-model="showModal" />
   </header>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const showModal = ref(false)
+</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');

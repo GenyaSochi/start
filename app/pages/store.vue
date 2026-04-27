@@ -427,8 +427,22 @@
         </div>
       </div>
 
+      <!-- Согласие на обработку ПД -->
+      <div class="form-block consent-section">
+        <div class="consent-wrapper">
+          <label class="consent-label" :class="{ active: form.consent }">
+            <input type="checkbox" v-model="form.consent" required />
+            <span class="checkmark"></span>
+            <span class="consent-text">
+              Я даю согласие на <NuxtLink to="/privacy" target="_blank">обработку персональных данных</NuxtLink>
+              в соответствии с политикой конфиденциальности
+            </span>
+          </label>
+        </div>
+      </div>
+
       <div class="form-actions">
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" :disabled="!form.consent">
           <span>Отправить анкету</span>
         </button>
       </div>
@@ -469,7 +483,8 @@ const form = reactive({
   ref3: '',
   contactName: '',
   contactPhone: '',
-  contactTime: ''
+  contactTime: '',
+  consent: false
 })
 
 function submitForm() {
@@ -851,6 +866,85 @@ textarea {
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
   }
+}
+
+/* ── Consent section ── */
+.consent-section {
+  border-color: rgba(74, 144, 226, 0.15);
+  background: rgba(74, 144, 226, 0.03);
+}
+
+.consent-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.consent-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkmark {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+  position: relative;
+  margin-top: 1px;
+}
+
+.consent-label.active .checkmark {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  border-color: #4a90e2;
+}
+
+.consent-label.active .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.consent-text {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+}
+
+.consent-text a {
+  color: rgba(74, 144, 226, 0.8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.consent-text a:hover {
+  color: rgba(74, 144, 226, 1);
+  text-decoration: underline;
+}
+
+.submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
 /* ── Responsive ── */
