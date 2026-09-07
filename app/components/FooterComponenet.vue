@@ -18,8 +18,7 @@
       </div>
       <div class="footer-col">
         <h4>Навигация</h4>
-        <NuxtLink to="/about">О нас</NuxtLink>
-        <NuxtLink to="/services">Услуги</NuxtLink>
+        <NuxtLink to="/menu">Доставка суши</NuxtLink>
         <NuxtLink to="/location">Где мы</NuxtLink>
         <NuxtLink to="/contacts">Контакты</NuxtLink>
       </div>

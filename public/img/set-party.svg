@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4e1b3a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <rect x="60" y="80" width="280" height="150" rx="12" fill="#2c2c2c" opacity="0.8"/>
+  <ellipse cx="120" cy="120" rx="25" ry="12" fill="#fa8072"/>
+  <ellipse cx="180" cy="120" rx="25" ry="12" fill="#90ee90"/>
+  <ellipse cx="240" cy="120" rx="25" ry="12" fill="#ff8c42"/>
+  <ellipse cx="300" cy="120" rx="25" ry="12" fill="#cd5c5c"/>
+  <ellipse cx="120" cy="160" rx="25" ry="12" fill="#8b4513"/>
+  <ellipse cx="180" cy="160" rx="25" ry="12" fill="#fa8072"/>
+  <ellipse cx="240" cy="160" rx="25" ry="12" fill="#90ee90"/>
+  <ellipse cx="300" cy="160" rx="25" ry="12" fill="#ff6347"/>
+  <ellipse cx="150" cy="200" rx="25" ry="12" fill="#ffa500"/>
+  <ellipse cx="210" cy="200" rx="25" ry="12" fill="#cd5c5c"/>
+  <ellipse cx="270" cy="200" rx="25" ry="12" fill="#fa8072"/>
+</svg>
