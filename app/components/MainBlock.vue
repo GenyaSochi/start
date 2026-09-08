@@ -1,18 +1,5 @@
 <template>
   <section class="main-block">
-    <p class="start-description">
-      Создаём современные веб-сайты, мобильные приложения и цифровые продукты,
-      которые помогают компаниям расти и привлекать клиентов
-    </p>
-    <div class="buttons-grid">
-      <NuxtLink to="/store" class="but1"><span>Интернет магазин</span></NuxtLink>
-      <button class="but2"><span>Сайт для ресторана или кафе с меню и бронированием</span></button>
-      <button class="but3"><span>Сайт для медицинского центра c записью онлайн</span></button>
-      <button class="but1"><span>Одностраничный сайт для запуска продукта с высокой конверсией</span></button>
-      <button class="but2"><span>Корпоративный имиджевый сайт с презентацией</span></button>
-      <button class="but3"><span>Портал недвижимости c каталогом объектов</span></button>
-      <button class="but1"><span>Сайт для салона красоты c портфолио мастеров и онлайн-записью</span></button>
-    </div>
   </section>
 </template>
 
