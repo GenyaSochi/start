@@ -1,5 +1,10 @@
 <template>
   <section class="privacy-page">
+    <button class="theme-toggle" @click="toggle" :title="theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'">
+      <span v-if="theme === 'dark'">☀️</span>
+      <span v-else>🌙</span>
+    </button>
+
     <h1 class="privacy-title">
       <span class="gradient-text">Политика конфиденциальности</span>
     </h1>
@@ -78,13 +83,50 @@
   </section>
 </template>
 
+<script setup>
+const { theme, toggle } = useTheme()
+</script>
+
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .privacy-page {
   max-width: 800px;
   margin: 0 auto;
   padding: 3rem 1.5rem 4rem;
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+:global([data-theme='light']) .theme-toggle {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+:global([data-theme='light']) .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .privacy-title {
@@ -99,7 +141,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .privacy-updated {
@@ -107,7 +149,7 @@
   color: rgba(255, 255, 255, 0.35);
   font-size: 0.85rem;
   margin: 0 0 3rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .privacy-content {
@@ -130,7 +172,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   margin: 0 0 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .privacy-section p {
@@ -138,7 +180,7 @@
   font-size: 0.95rem;
   line-height: 1.7;
   margin: 0 0 0.75rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .privacy-section p:last-child {
@@ -151,10 +193,51 @@
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.95rem;
   line-height: 1.8;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .privacy-section li {
   margin-bottom: 0.25rem;
+}
+
+/* ── Light theme ── */
+:global([data-theme='light']) .privacy-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  max-width: 100%;
+  border-radius: 0;
+}
+
+:global([data-theme='light']) .privacy-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+:global([data-theme='light']) .gradient-text {
+  background: linear-gradient(135deg, #1a1a2e, #2d5aa0, #1a1a2e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:global([data-theme='light']) .privacy-updated {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme='light']) .privacy-section {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.08);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+:global([data-theme='light']) .privacy-section h2 {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+:global([data-theme='light']) .privacy-section p,
+:global([data-theme='light']) .privacy-section ul {
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>

@@ -35,7 +35,7 @@
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .footer-wrapper {
   background: rgba(9, 10, 15, 0.7);
@@ -71,7 +71,7 @@
   color: rgba(255, 255, 255, 0.9);
   font-weight: 700;
   font-size: 1.2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   letter-spacing: 1.5px;
 }
 
@@ -97,7 +97,7 @@
   display: block;
   color: rgba(255, 255, 255, 0.45);
   font-size: 0.9rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   text-decoration: none;
   margin: 0 0 10px 0;
   transition: color 0.2s ease;

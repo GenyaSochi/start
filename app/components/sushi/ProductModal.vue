@@ -156,7 +156,7 @@ function decrease() {
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .badge.hit {
@@ -183,21 +183,21 @@ function decrease() {
   font-size: 1.4rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.95);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .product-modal-weight {
   margin: 0 0 12px;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.4);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .spiciness {
   margin-bottom: 12px;
   font-size: 0.9rem;
   color: rgba(255, 150, 100, 0.9);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .product-modal-desc {
@@ -205,7 +205,7 @@ function decrease() {
   font-size: 0.95rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .product-modal-footer {
@@ -227,14 +227,14 @@ function decrease() {
   font-size: 1.5rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.95);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .old-price {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.35);
   text-decoration: line-through;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .qty-row {
@@ -276,7 +276,7 @@ function decrease() {
   color: rgba(255, 255, 255, 0.9);
   min-width: 24px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .add-to-cart-btn {
@@ -287,7 +287,7 @@ function decrease() {
   color: #fff;
   font-size: 0.95rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;

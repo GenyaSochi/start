@@ -210,7 +210,7 @@ async function startCheckout() {
   font-size: 1.2rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .close-btn {
@@ -240,7 +240,7 @@ async function startCheckout() {
   justify-content: center;
   gap: 8px;
   color: rgba(255, 255, 255, 0.4);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .cart-empty p {
@@ -296,7 +296,7 @@ async function startCheckout() {
   font-size: 0.9rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -306,7 +306,7 @@ async function startCheckout() {
   margin: 0 0 4px;
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.35);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .item-price {
@@ -314,7 +314,7 @@ async function startCheckout() {
   font-size: 0.85rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .item-actions {
@@ -358,7 +358,7 @@ async function startCheckout() {
   color: rgba(255, 255, 255, 0.9);
   min-width: 18px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .remove-btn {
@@ -398,7 +398,7 @@ async function startCheckout() {
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.9rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   outline: none;
 }
 
@@ -418,7 +418,7 @@ async function startCheckout() {
   color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -432,14 +432,14 @@ async function startCheckout() {
   margin: 6px 0 0;
   font-size: 0.8rem;
   color: rgba(244, 67, 54, 0.9);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .promo-success {
   margin: 6px 0 0;
   font-size: 0.8rem;
   color: rgba(76, 175, 80, 0.9);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -473,7 +473,7 @@ async function startCheckout() {
   justify-content: space-between;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .summary-row.discount {
@@ -500,7 +500,7 @@ async function startCheckout() {
   border-radius: 10px;
   color: rgba(255, 183, 77, 0.95);
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -514,7 +514,7 @@ async function startCheckout() {
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 10px;
@@ -538,7 +538,7 @@ async function startCheckout() {
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
 }

@@ -9,92 +9,40 @@
         <span v-if="!product.is_available" class="badge unavailable">Нет в наличии</span>
       </div>
     </div>
-
-    <div class="card-body">
-      <h3 class="card-title" @click="$emit('open', product)">{{ product.name }}</h3>
-      <p class="card-weight">{{ product.weight }} г</p>
-
-      <div class="card-footer">
-        <div class="price-block">
-          <span class="price">{{ product.price }} ₽</span>
-          <span v-if="product.old_price" class="old-price">{{ product.old_price }} ₽</span>
-        </div>
-
-        <div v-if="quantity > 0" class="qty-control">
-          <button class="qty-btn" @click="decrease">−</button>
-          <span class="qty-value">{{ quantity }}</span>
-          <button class="qty-btn" @click="increase">+</button>
-        </div>
-        <button v-else class="add-btn" :disabled="!product.is_available" @click="increase">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M9 3V15M3 9H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
   </article>
 </template>
 
 <script setup lang="ts">
 import type { Product } from '~/../../shared/types/sushi'
 
-const props = defineProps<{
+defineProps<{
   product: Product
   quantity: number
 }>()
 
-const emit = defineEmits<{
-  (e: 'add', product: Product): void
-  (e: 'decrease', product: Product): void
+defineEmits<{
   (e: 'open', product: Product): void
 }>()
-
-function increase() {
-  if (!props.product.is_available) return
-  emit('add', props.product)
-}
-
-function decrease() {
-  emit('decrease', props.product)
-}
 </script>
 
 <style scoped>
 .product-card {
-  background: #ffffff;
+  background: #1a1a1a;
   border: none;
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.06),
-    inset 0 0 0 2px rgba(74, 144, 226, 0.15),
-    0 0 0 1px rgba(74, 144, 226, 0.08);
+    0 2px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
   position: relative;
-}
-
-.product-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(135deg, rgba(74,144,226,0.12), rgba(160,120,255,0.08), transparent 60%);
-  opacity: 0.6;
-  transition: opacity 0.25s ease;
 }
 
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 12px 32px rgba(74, 144, 226, 0.12),
-    0 4px 12px rgba(0, 0, 0, 0.04),
-    inset 0 0 0 2px rgba(74, 144, 226, 0.3);
-}
-
-.product-card:hover::after {
-  opacity: 1;
+    0 12px 32px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .product-card.unavailable {
@@ -132,7 +80,7 @@ function decrease() {
   border-radius: 6px;
   font-size: 0.7rem;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .badge.hit {
@@ -164,7 +112,7 @@ function decrease() {
   font-size: 1rem;
   font-weight: 600;
   color: #1a1a2e;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -177,7 +125,7 @@ function decrease() {
   margin: 0 0 12px;
   font-size: 0.8rem;
   color: #888;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .card-footer {
@@ -196,14 +144,14 @@ function decrease() {
   font-size: 1.1rem;
   font-weight: 700;
   color: #1a1a2e;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .old-price {
   font-size: 0.85rem;
   color: #aaa;
   text-decoration: line-through;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .qty-control {
@@ -240,7 +188,7 @@ function decrease() {
   color: #1a1a2e;
   min-width: 20px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .add-btn {

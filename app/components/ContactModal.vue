@@ -53,7 +53,7 @@
 <script setup>
 import { reactive } from 'vue'
 
-const props = defineProps({
+defineProps({
   modelValue: Boolean
 })
 
@@ -82,7 +82,7 @@ function submitForm() {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .modal-overlay {
   position: fixed;
@@ -137,7 +137,7 @@ function submitForm() {
   font-size: 1.5rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.95);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   margin: 0 0 0.5rem;
   text-align: center;
 }
@@ -147,7 +147,7 @@ function submitForm() {
   font-size: 0.9rem;
   text-align: center;
   margin: 0 0 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   line-height: 1.5;
 }
 
@@ -167,7 +167,7 @@ function submitForm() {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.85rem;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .form-field input,
@@ -179,7 +179,7 @@ function submitForm() {
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
   outline: none;
   box-sizing: border-box;
@@ -255,7 +255,7 @@ function submitForm() {
   color: rgba(255, 255, 255, 0.45);
   font-size: 0.8rem;
   line-height: 1.5;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .consent-text a {
@@ -281,7 +281,7 @@ function submitForm() {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   background: linear-gradient(135deg, #4a90e2, #357abd);
   box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
   transition: all 0.3s ease;

@@ -81,25 +81,25 @@ defineEmits<{
 }
 
 .sort-group label {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .sort-group select {
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  color: rgba(255, 255, 255, 0.85);
+  color: #fff;
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   outline: none;
   cursor: pointer;
 }
 
 .sort-group select:focus {
-  border-color: rgba(74, 144, 226, 0.5);
+  border-color: #370000;
 }
 
 .filter-toggles {
@@ -110,24 +110,24 @@ defineEmits<{
 .filter-chip {
   padding: 8px 16px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #1a1a1a;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.8rem;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .filter-chip:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #2a2a2a;
 }
 
 .filter-chip.active {
-  background: rgba(244, 67, 54, 0.2);
-  border-color: rgba(244, 67, 54, 0.5);
-  color: rgba(255, 120, 100, 0.95);
+  background: #370000;
+  border-color: #370000;
+  color: #fff;
 }
 
 .price-range {
@@ -138,29 +138,29 @@ defineEmits<{
 }
 
 .price-range label {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
 }
 
 .price-range input {
   width: 80px;
   padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  color: rgba(255, 255, 255, 0.85);
+  color: #fff;
   font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   outline: none;
 }
 
 .price-range input:focus {
-  border-color: rgba(74, 144, 226, 0.5);
+  border-color: #370000;
 }
 
 .price-range span {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {

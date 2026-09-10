@@ -43,26 +43,26 @@ defineEmits<{
   flex-shrink: 0;
   padding: 10px 22px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.6);
   font-size: 0.9rem;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: all 0.25s ease;
   white-space: nowrap;
 }
 
 .tab:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .tab.active {
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  background: #1a1a1a;
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 </style>
