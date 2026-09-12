@@ -17,7 +17,7 @@
               <input v-model="form.name" type="text" placeholder="Как к вам обращаться?" required />
             </div>
             <div class="form-field">
-              <label>Телефон или Telegram</label>
+              <label>Телефон</label>
               <input v-model="form.phone" type="text" placeholder="+7 (___) ___-__-__" required />
             </div>
             <div class="form-field">

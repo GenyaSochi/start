@@ -1,5 +1,5 @@
 import type { CartState, CartItem, PromoResult } from '../../shared/types/sushi'
-import { products, promos, MIN_ORDER_SUM, DELIVERY_COST_BELOW_MIN } from '../data/menu'
+import { products, promos, MIN_ORDER_SUM, DELIVERY_COST, FREE_DELIVERY_THRESHOLD } from '../data/menu'
 
 const carts = new Map<string, CartState>()
 
@@ -137,7 +137,11 @@ export function recalculate(cart: CartState): void {
   const subtotal = calcSubtotal(cart)
   cart.promo = calcPromoDiscount(cart)
   const afterDiscount = subtotal - (cart.promo?.discount_amount || 0)
-  cart.delivery_cost = afterDiscount < MIN_ORDER_SUM ? DELIVERY_COST_BELOW_MIN : 0
+  if (afterDiscount >= FREE_DELIVERY_THRESHOLD) {
+    cart.delivery_cost = 0
+  } else {
+    cart.delivery_cost = DELIVERY_COST
+  }
 }
 
 export function getCartSummary(cart: CartState) {

@@ -9,20 +9,55 @@
         <span v-if="!product.is_available" class="badge unavailable">Нет в наличии</span>
       </div>
     </div>
+
+    <div class="card-body">
+      <h3 class="card-title" @click="$emit('open', product)">{{ product.name }}</h3>
+      <p class="card-weight">{{ product.weight }} г</p>
+
+      <div class="card-footer">
+        <div class="price-block">
+          <span class="price">{{ product.price }} ₽</span>
+          <span v-if="product.old_price" class="old-price">{{ product.old_price }} ₽</span>
+        </div>
+
+        <div v-if="quantity > 0" class="qty-control">
+          <button class="qty-btn" @click="decrease">−</button>
+          <span class="qty-value">{{ quantity }}</span>
+          <button class="qty-btn" @click="increase">+</button>
+        </div>
+        <button v-else class="add-btn" :disabled="!product.is_available" @click="increase">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
   </article>
 </template>
 
 <script setup lang="ts">
 import type { Product } from '~/../../shared/types/sushi'
 
-defineProps<{
+const props = defineProps<{
   product: Product
   quantity: number
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'open', product: Product): void
+  (e: 'add', product: Product): void
+  (e: 'decrease', product: Product): void
 }>()
+
+function increase() {
+  if (props.product.is_available) {
+    emit('add', props.product)
+  }
+}
+
+function decrease() {
+  emit('decrease', props.product)
+}
 </script>
 
 <style scoped>
@@ -111,7 +146,7 @@ defineEmits<{
   margin: 0 0 4px;
   font-size: 1rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: rgba(255, 255, 255, 0.95);
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -124,7 +159,7 @@ defineEmits<{
 .card-weight {
   margin: 0 0 12px;
   font-size: 0.8rem;
-  color: #888;
+  color: rgba(255, 255, 255, 0.4);
   font-family: 'Manrope', sans-serif;
 }
 
@@ -143,13 +178,13 @@ defineEmits<{
 .price {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: rgba(255, 255, 255, 0.95);
   font-family: 'Manrope', sans-serif;
 }
 
 .old-price {
   font-size: 0.85rem;
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.35);
   text-decoration: line-through;
   font-family: 'Manrope', sans-serif;
 }
@@ -158,7 +193,7 @@ defineEmits<{
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f0f4ff;
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   padding: 4px 8px;
 }
@@ -171,7 +206,7 @@ defineEmits<{
   justify-content: center;
   background: none;
   border: none;
-  color: #4a90e2;
+  color: #fff;
   font-size: 1.1rem;
   cursor: pointer;
   border-radius: 6px;
@@ -179,13 +214,13 @@ defineEmits<{
 }
 
 .qty-btn:hover {
-  background: rgba(74, 144, 226, 0.12);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .qty-value {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #fff;
   min-width: 20px;
   text-align: center;
   font-family: 'Manrope', sans-serif;

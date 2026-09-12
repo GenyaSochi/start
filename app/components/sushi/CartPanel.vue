@@ -1,4 +1,5 @@
 <template>
+  <Teleport to="body">
   <Transition name="slide">
     <div v-if="open" class="cart-overlay" @click.self="$emit('close')">
       <div class="cart-panel">
@@ -11,7 +12,14 @@
           </button>
         </div>
 
-        <div v-if="isEmpty" class="cart-empty">
+        <div v-if="checkoutDone" class="cart-success-block">
+          <div class="checkout-success">
+            <p class="checkout-success-title">Заказ оформлен!</p>
+            <p class="checkout-success-text">В ближайшее время с вами свяжется администратор</p>
+          </div>
+        </div>
+
+        <div v-else-if="isEmpty" class="cart-empty">
           <p>Корзина пуста</p>
           <span>Добавьте что-нибудь вкусное из меню</span>
         </div>
@@ -69,13 +77,17 @@
               <span>Скидка</span>
               <span>−{{ cart.discount }} ₽</span>
             </div>
+            <div v-if="pickupDiscount > 0" class="summary-row discount">
+              <span>Скидка за самовывоз (10%)</span>
+              <span>−{{ pickupDiscount }} ₽</span>
+            </div>
             <div class="summary-row">
               <span>Доставка</span>
-              <span>{{ cart.delivery_cost === 0 ? 'Бесплатно' : cart.delivery_cost + ' ₽' }}</span>
+              <span>{{ deliveryType === 'pickup' ? 'Бесплатно (самовывоз)' : (effectiveDeliveryCost === 0 ? 'Бесплатно' : effectiveDeliveryCost + ' ₽ (оплата курьеру)') }}</span>
             </div>
             <div class="summary-row total">
               <span>Итого</span>
-              <span>{{ cart.total }} ₽</span>
+              <span>{{ effectiveTotal }} ₽</span>
             </div>
             <div class="summary-row weight">
               <span>Вес заказа</span>
@@ -84,23 +96,75 @@
           </div>
 
           <!-- Предупреждение о мин. сумме -->
-          <div v-if="cart.min_order_diff > 0" class="min-order-warning">
-            Добавьте ещё на {{ cart.min_order_diff }} ₽ для бесплатной доставки
+          <div v-if="cart.min_order_diff > 0 && deliveryType === 'delivery'" class="min-order-warning">
+            Минимальная сумма заказа — 500 ₽. Добавьте ещё на {{ cart.min_order_diff }} ₽
+          </div>
+          <div v-else-if="deliveryType === 'delivery' && effectiveDeliveryCost > 0" class="min-order-warning">
+            Бесплатная доставка от 1500 ₽. Добавьте ещё на {{ 1500 - (cart.subtotal - cart.discount) }} ₽
           </div>
 
-          <button class="checkout-btn" :disabled="cart.min_order_diff > 0 || checkingOut" @click="startCheckout">
+          <!-- Локация и телефон -->
+          <div class="checkout-form">
+            <div class="form-group">
+              <label class="form-label">Способ получения</label>
+              <div class="location-options">
+                <button
+                  class="location-option"
+                  :class="{ active: deliveryType === 'pickup' }"
+                  @click="deliveryType = 'pickup'"
+                >
+                  Самовывоз
+                  <span class="location-price">Бесплатно</span>
+                </button>
+                <button
+                  class="location-option"
+                  :class="{ active: deliveryType === 'delivery' }"
+                  @click="deliveryType = 'delivery'"
+                >
+                  Доставка
+                  <span class="location-price">{{ cart.delivery_cost === 0 ? 'Бесплатно' : cart.delivery_cost + ' ₽' }}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Номер телефона</label>
+              <input
+                v-model="phone"
+                type="tel"
+                placeholder="+7 (___) ___-__-__"
+                class="phone-input"
+              />
+              <p v-if="phoneError" class="field-error">{{ phoneError }}</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Желаемое время готовности</label>
+              <input
+                v-model="readyTime"
+                type="time"
+                class="phone-input"
+              />
+            </div>
+          </div>
+
+          <div v-if="checkoutError" class="checkout-error-msg">
+            {{ checkoutError }}
+          </div>
+          <button v-if="!checkoutDone" class="checkout-btn" :disabled="(cart.min_order_diff > 0 && deliveryType === 'delivery') || checkingOut" @click="startCheckout">
             <span v-if="checkingOut">Оформление...</span>
-            <span v-else>Оформить заказ — {{ cart.total }} ₽</span>
+            <span v-else>Оформить заказ — {{ effectiveTotal }} ₽</span>
           </button>
           <button class="clear-btn" @click="clearCart">Очистить корзину</button>
         </div>
       </div>
     </div>
   </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCart } from '~/composables/useCart'
 
 defineProps<{ open: boolean }>()
@@ -116,6 +180,24 @@ const promoError = ref('')
 const checkingOut = ref(false)
 const checkoutDone = ref(false)
 const checkoutError = ref('')
+const deliveryType = ref<'pickup' | 'delivery'>('delivery')
+const phone = ref('')
+const phoneError = ref('')
+const readyTime = ref('')
+
+const effectiveDeliveryCost = computed(() => {
+  if (deliveryType.value === 'pickup') return 0
+  return cart.value.delivery_cost
+})
+
+const pickupDiscount = computed(() => {
+  if (deliveryType.value !== 'pickup') return 0
+  return Math.round((cart.value.subtotal - cart.value.discount) * 0.1)
+})
+
+const effectiveTotal = computed(() => {
+  return cart.value.subtotal - cart.value.discount - pickupDiscount.value + effectiveDeliveryCost.value
+})
 
 async function applyPromoCode() {
   promoError.value = ''
@@ -146,7 +228,12 @@ async function onDecrease(item: any) {
 }
 
 async function startCheckout() {
-  if (cart.value.min_order_diff > 0) return
+  phoneError.value = ''
+  if (!phone.value.trim()) {
+    phoneError.value = 'Укажите номер телефона для связи'
+    return
+  }
+  if (cart.value.min_order_diff > 0 && deliveryType.value === 'delivery') return
   checkingOut.value = true
   checkoutError.value = ''
   try {
@@ -179,22 +266,27 @@ async function startCheckout() {
 .cart-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1001;
   display: flex;
+  align-items: flex-end;
   justify-content: flex-end;
+  padding: 0 24px 80px 24px;
+  pointer-events: auto;
 }
 
 .cart-panel {
   width: 420px;
-  max-width: 100vw;
-  height: 100vh;
+  max-width: calc(100vw - 48px);
+  max-height: 80vh;
   background: rgba(15, 18, 28, 0.97);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
 }
 
 .cart-header {
@@ -232,6 +324,14 @@ async function startCheckout() {
   color: #fff;
 }
 
+.cart-success-block {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
 .cart-empty {
   flex: 1;
   display: flex;
@@ -239,6 +339,7 @@ async function startCheckout() {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 2rem 1.5rem;
   color: rgba(255, 255, 255, 0.4);
   font-family: 'Manrope', sans-serif;
 }
@@ -505,6 +606,135 @@ async function startCheckout() {
   text-align: center;
 }
 
+/* Checkout form */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Manrope', sans-serif;
+}
+
+.location-options {
+  display: flex;
+  gap: 8px;
+}
+
+.location-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.location-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.location-option.active {
+  background: rgba(74, 144, 226, 0.15);
+  border-color: rgba(74, 144, 226, 0.5);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.location-price {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.location-option.active .location-price {
+  color: rgba(74, 144, 226, 0.8);
+}
+
+.phone-input {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-family: 'Manrope', sans-serif;
+  outline: none;
+  transition: border-color 0.2s ease;
+  color-scheme: dark;
+}
+
+.phone-input:focus {
+  border-color: rgba(74, 144, 226, 0.5);
+}
+
+.phone-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.field-error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(244, 67, 54, 0.9);
+  font-family: 'Manrope', sans-serif;
+}
+
+.checkout-success {
+  padding: 20px 16px;
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.checkout-success-title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(76, 175, 80, 0.95);
+  font-family: 'Manrope', sans-serif;
+}
+
+.checkout-success-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Manrope', sans-serif;
+}
+
+.checkout-error-msg {
+  padding: 12px 16px;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 10px;
+  color: rgba(244, 67, 54, 0.9);
+  font-size: 0.85rem;
+  font-family: 'Manrope', sans-serif;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .checkout-btn {
   width: 100%;
   padding: 14px;
@@ -556,7 +786,7 @@ async function startCheckout() {
 
 .slide-enter-active .cart-panel,
 .slide-leave-active .cart-panel {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .slide-enter-from,
@@ -565,16 +795,23 @@ async function startCheckout() {
 }
 
 .slide-enter-from .cart-panel {
-  transform: translateX(100%);
+  transform: translateY(40px) scale(0.95);
+  opacity: 0;
 }
 
 .slide-leave-to .cart-panel {
-  transform: translateX(100%);
+  transform: translateY(40px) scale(0.95);
+  opacity: 0;
 }
 
 @media (max-width: 480px) {
+  .cart-overlay {
+    padding: 0 12px 72px 12px;
+  }
   .cart-panel {
-    width: 100vw;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
   }
 }
 </style>

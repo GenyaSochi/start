@@ -189,8 +189,9 @@ onMounted(async () => {
   width: 60vmin;
   height: 60vmin;
   object-fit: contain;
-  opacity: 0.07;
+  filter: contrast(1.15) brightness(1.05) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
   pointer-events: none;
+  cursor: none;
   z-index: 0;
 }
 
