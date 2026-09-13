@@ -6,5 +6,10 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ['~/assets/style.css'],
-  modules: ['@nuxt/fonts', '@nuxt/image']
+  modules: ['@nuxt/fonts', '@nuxt/image'],
+  app: {
+    head: {
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=5'
+    }
+  }
 })

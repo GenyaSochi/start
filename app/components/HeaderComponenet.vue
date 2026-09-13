@@ -133,7 +133,41 @@ const showModal = ref(false)
   }
 
   .header {
-    padding: 12px 20px;
+    padding: 12px 16px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .name {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  .header-but {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .header-but:hover {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .header {
+    padding: 10px 12px;
+  }
+
+  .name {
+    font-size: 0.95rem;
+  }
+
+  .header-but {
+    padding: 7px 10px;
+    font-size: 0.75rem;
   }
 }
 </style>

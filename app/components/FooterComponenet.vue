@@ -1,48 +1,37 @@
 <template>
   <footer class="footer-wrapper">
     <div class="footer">
-      <div class="footer-col">
+      <div class="footer-col footer-brand">
         <div class="footer-logo">
-          <svg class="rocket-icon-footer" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 6 C32 6 22 18 22 34 L22 42 L42 42 L42 34 C42 18 32 6 32 6Z" fill="rgba(255,255,255,0.9)" />
-            <circle cx="32" cy="24" r="4" fill="#1b2735" stroke="rgba(255,255,255,0.6)" stroke-width="1" />
-            <path d="M22 36 L14 46 L22 42Z" fill="rgba(255,255,255,0.7)" />
-            <path d="M42 36 L50 46 L42 42Z" fill="rgba(255,255,255,0.7)" />
-            <path d="M27 42 L25 50 L39 50 L37 42Z" fill="rgba(255,255,255,0.5)" />
-            <path d="M29 50 L32 58 L35 50Z" fill="rgba(74,144,226,0.6)" />
-            <path d="M30 50 L32 55 L34 50Z" fill="rgba(74,144,226,0.3)" />
-          </svg>
-          <span class="footer-name">СТАРТ</span>
+          <img src="/img/samuraiblack.webp" alt="Сытый самурай" class="footer-logo-img" />
+          <span class="footer-name">Сытый самурай</span>
         </div>
-        <p class="footer-tagline">Создаём цифровые продукты, которые помогают бизнесу расти</p>
+        <p class="footer-tagline">Победи голод вместе с нами! Доставка вкусных суши и роллов</p>
       </div>
       <div class="footer-col">
         <h4>Навигация</h4>
-        <NuxtLink to="/menu">Доставка суши</NuxtLink>
-        <NuxtLink to="/location">Где мы</NuxtLink>
-        <NuxtLink to="/contacts">Контакты</NuxtLink>
+        <NuxtLink to="/">Главная</NuxtLink>
+        <NuxtLink to="/menu">Меню</NuxtLink>
       </div>
       <div class="footer-col">
         <h4>Контакты</h4>
-        <p>info@start-web.ru</p>
+        <p>info@sytyi-samurai.ru</p>
         <p>+7 (999) 123-45-67</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 СТАРТ. Все права защищены.</p>
+      <p>© 2026 Сытый самурай. Все права защищены.</p>
     </div>
   </footer>
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
-
 .footer-wrapper {
-  background: rgba(9, 10, 15, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: #1a1a1a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   margin-top: 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 .footer {
@@ -61,10 +50,11 @@
   margin-bottom: 16px;
 }
 
-.rocket-icon-footer {
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 0 4px rgba(74, 144, 226, 0.3));
+.footer-logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .footer-name {
@@ -72,24 +62,26 @@
   font-weight: 700;
   font-size: 1.2rem;
   font-family: 'Manrope', sans-serif;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 }
 
 .footer-tagline {
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 280px;
+  max-width: 300px;
   margin: 0;
+  font-family: 'Manrope', sans-serif;
 }
 
 .footer-col h4 {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0 0 16px 0;
+  font-family: 'Manrope', sans-serif;
 }
 
 .footer-col a,
@@ -104,28 +96,102 @@
 }
 
 .footer-col a:hover {
-  color: rgba(255, 255, 255, 0.85);
+  color: #c0392b;
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 32px;
 }
 
 .footer-bottom p {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.25);
   font-size: 0.8rem;
   margin: 0;
   text-align: center;
+  font-family: 'Manrope', sans-serif;
 }
 
 @media (max-width: 768px) {
+  .footer-wrapper {
+    margin-top: 2.5rem;
+  }
+
   .footer {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 32px 20px 24px;
+    gap: 28px;
+    padding: 28px 20px 20px;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-logo-img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer-name {
+    font-size: 1.1rem;
+  }
+
+  .footer-tagline {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .footer-col {
+    text-align: center;
+  }
+
+  .footer-col h4 {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .footer-col a,
+  .footer-col p {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .footer-bottom {
+    padding: 16px 20px;
+  }
+
+  .footer-bottom p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .footer {
+    gap: 22px;
+    padding: 24px 16px 18px;
+  }
+
+  .footer-name {
+    font-size: 1rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.8rem;
+  }
+
+  .footer-col a,
+  .footer-col p {
+    font-size: 0.8rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.7rem;
   }
 }
 </style>
