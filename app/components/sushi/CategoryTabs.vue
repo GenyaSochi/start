@@ -43,9 +43,9 @@ defineEmits<{
   flex-shrink: 0;
   padding: 10px 22px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
   font-weight: 500;
   font-family: 'Manrope', sans-serif;
@@ -55,14 +55,14 @@ defineEmits<{
 }
 
 .tab:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.85);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .tab.active {
-  background: #1a1a1a;
-  border-color: transparent;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 </style>

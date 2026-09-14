@@ -1,7 +1,7 @@
 <template>
   <article class="product-card" :class="{ unavailable: !product.is_available }">
     <div class="card-image" @click="$emit('open', product)">
-      <img :src="product.image_url" :alt="product.name" loading="lazy" />
+      <img :src="product.image_url" :alt="product.name" />
       <div class="badges">
         <span v-if="product.is_hit" class="badge hit">Хит</span>
         <span v-if="product.is_new" class="badge new">Новинка</span>
@@ -89,15 +89,19 @@ function decrease() {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
+  min-height: 120px;
   overflow: hidden;
   cursor: pointer;
-  background: #f8f9fa;
+  background: #2a2a2a;
 }
 
 .card-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .badges {

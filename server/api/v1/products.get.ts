@@ -1,4 +1,4 @@
-import { products } from '../../data/menu'
+import { getProducts } from '../../utils/menu-store'
 
 export default defineEventHandler((event) => {
   const query = getQuery(event)
@@ -7,6 +7,7 @@ export default defineEventHandler((event) => {
   const limit = query.limit ? Number(query.limit) : 20
   const offset = query.offset ? Number(query.offset) : 0
 
+  const products = getProducts()
   let result = products.filter((p) => p.is_available)
 
   if (category) {

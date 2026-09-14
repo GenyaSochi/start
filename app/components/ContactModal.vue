@@ -8,7 +8,7 @@
               <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
-          <h2 class="modal-title">Связаться с нами</h2>
+          <h2 class="modal-title">Сделать предзаказ</h2>
           <p class="modal-subtitle">Оставьте заявку и мы ответим вам в ближайшее время</p>
 
           <form class="contact-form" @submit.prevent="submitForm">
@@ -26,7 +26,7 @@
             </div>
             <div class="form-field">
               <label>Сообщение</label>
-              <textarea v-model="form.message" placeholder="Опишите ваш проект или вопрос..." rows="4"></textarea>
+              <textarea v-model="form.message" placeholder="Оставить предзаказ и свои пожелания" rows="4"></textarea>
             </div>
 
             <div class="consent-block">

@@ -1,10 +1,10 @@
-import { getProductById } from '../../../utils/menu-store'
+import { deleteProduct } from '../../../../utils/menu-store'
 
 export default defineEventHandler((event) => {
   const id = Number(getRouterParam(event, 'id'))
-  const product = getProductById(id)
-  if (!product) {
+  const success = deleteProduct(id)
+  if (!success) {
     throw createError({ statusCode: 404, statusMessage: 'Товар не найден' })
   }
-  return product
+  return { success: true }
 })

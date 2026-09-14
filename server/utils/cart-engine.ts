@@ -1,5 +1,6 @@
 import type { CartState, CartItem, PromoResult } from '../../shared/types/sushi'
-import { products, promos, MIN_ORDER_SUM, DELIVERY_COST, FREE_DELIVERY_THRESHOLD } from '../data/menu'
+import { promos, MIN_ORDER_SUM, DELIVERY_COST, FREE_DELIVERY_THRESHOLD } from '../data/menu'
+import { getProducts } from './menu-store'
 
 const carts = new Map<string, CartState>()
 
@@ -19,6 +20,7 @@ export function getOrCreateCart(cartId?: string): CartState {
 
 export function addToCart(cartId: string, productId: number, quantity: number): CartState {
   const cart = getOrCreateCart(cartId)
+  const products = getProducts()
   const product = products.find((p) => p.id === productId)
 
   if (!product) {
@@ -145,6 +147,7 @@ export function recalculate(cart: CartState): void {
 }
 
 export function getCartSummary(cart: CartState) {
+  const products = getProducts()
   const subtotal = calcSubtotal(cart)
   const discount = cart.promo?.discount_amount || 0
   const totalWeight = cart.items.reduce((sum, item) => {

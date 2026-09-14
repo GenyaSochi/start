@@ -1,6 +1,5 @@
 <template>
   <section class="menu-page">
-    <img src="/img/samuraiblack.webp" alt="" class="samurai-bg" />
     <h1 class="menu-title">
       <span class="gradient-text">Победи голод - сделай вкусный заказ!</span>
     </h1>
@@ -181,25 +180,6 @@ onMounted(async () => {
   position: relative;
 }
 
-.samurai-bg {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60vmin;
-  height: 60vmin;
-  object-fit: contain;
-  filter: contrast(1.15) brightness(1.05) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
-  pointer-events: none;
-  cursor: none;
-  z-index: 0;
-}
-
-.menu-page > *:not(.samurai-bg) {
-  position: relative;
-  z-index: 1;
-}
-
 .menu-title {
   text-align: center;
   margin: 0 0 2rem;
@@ -208,7 +188,7 @@ onMounted(async () => {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #370000, #6b1a1a, #370000);
+  background: linear-gradient(135deg, #ff4d4d, #ff8c8c, #ff4d4d);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -228,14 +208,14 @@ onMounted(async () => {
 .loading {
   text-align: center;
   padding: 3rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-family: 'Manrope', sans-serif;
 }
 
 .empty-state {
   text-align: center;
   padding: 4rem 1rem;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.4);
   font-family: 'Manrope', sans-serif;
 }
 
@@ -243,44 +223,45 @@ onMounted(async () => {
   margin: 0 0 8px;
   font-size: 1.1rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .floating-cart {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  right: 28px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 24px;
-  background: #1a1a1a;
+  gap: 12px;
+  padding: 18px 32px;
+  background: linear-gradient(135deg, #ff4d4d, #c0392b);
   border: none;
-  border-radius: 16px;
+  border-radius: 20px;
   color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 40px rgba(255, 77, 77, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   z-index: 999;
 }
 
 .floating-cart:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 48px rgba(255, 77, 77, 0.5), 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .cart-badge {
-  background: rgba(255, 255, 255, 0.25);
-  padding: 2px 8px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .cart-total {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
