@@ -50,6 +50,7 @@
 import { ref, computed, onMounted } from 'vue'
 import type { Product, Category } from '~/../../shared/types/sushi'
 import { useCart } from '~/composables/useCart'
+import { getProducts, getCategories } from '~/helpers/menu-store'
 
 const { cart, itemCount, fetchCart, addProduct, updateQuantity, removeProduct, getItemQuantity } = useCart()
 
@@ -108,14 +109,13 @@ const filteredProducts = computed(() => {
 })
 
 async function loadData() {
+  const categs = getCategories()
+  const cats = [...categs].sort((a, b) => a.sort_order - b.sort_order)
+  const prods = getProducts()
+  categories.value = [{ id: 0, name: 'Все', slug: 'all', sort_order: 0 }, ...cats]
+  products.value = prods
   pending.value = true
   try {
-    const [cats, prods] = await Promise.all([
-      $fetch<Category[]>('/api/v1/categories'),
-      $fetch<Product[]>('/api/v1/products?limit=100')
-    ])
-    categories.value = [{ id: 0, name: 'Все', slug: 'all', sort_order: 0 }, ...cats]
-    products.value = prods
   } catch (e) {
     console.error('Failed to load menu:', e)
   } finally {

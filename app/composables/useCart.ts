@@ -1,4 +1,5 @@
 import { ref, computed, readonly } from 'vue'
+import { getOrCreateCart, getCartSummary, updateCartItem as uci, addToCart as atc, applyPromo as ap, removeFromCart as rfc, clearCart as cc} from '~/helpers/cart-engine'
 
 const CART_ID_KEY = 'sushi_cart_id'
 
@@ -79,47 +80,56 @@ export function useCart() {
   async function fetchCart() {
     const cartId = getCartId()
     if (!cartId) return
-    await apiCall(`/api/v1/cart?cart_id=${cartId}`)
+    const cart1 = getOrCreateCart(cartId)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   async function addProduct(productId: number, quantity = 1) {
-    const cartId = getCartId()
-    await apiCall('/api/v1/cart/add', {
-      method: 'POST',
-      body: { cart_id: cartId, product_id: productId, quantity }
-    })
+    const cartId = getCartId()      
+    const cart1 = atc(cartId || '', productId, quantity)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   async function updateQuantity(productId: number, quantity: number) {
     const cartId = getCartId()
-    await apiCall('/api/v1/cart/update', {
-      method: 'PUT',
-      body: { cart_id: cartId, product_id: productId, quantity }
-    })
+    const cart1 = uci(cartId, productId, quantity)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   async function removeProduct(productId: number) {
     const cartId = getCartId()
-    await apiCall('/api/v1/cart/remove', {
-      method: 'DELETE',
-      body: { cart_id: cartId, product_id: productId }
-    })
+    const cart1 = rfc(cartId, productId)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   async function applyPromo(code: string) {
     const cartId = getCartId()
-    await apiCall('/api/v1/cart/apply_promo', {
-      method: 'POST',
-      body: { cart_id: cartId, code }
-    })
+    const cart1 = ap(cartId, code)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   async function clearCart() {
     const cartId = getCartId()
-    await apiCall('/api/v1/cart/clear', {
-      method: 'DELETE',
-      body: { cart_id: cartId }
-    })
+    const cart1 = cc(cartId)
+    cart.value = getCartSummary(cart1)
+    if (import.meta.client && cartId) {
+      localStorage.setItem(CART_ID_KEY, cartId)
+    }
   }
 
   function getItemQuantity(productId: number): number {

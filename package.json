@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
-    "deploy": "npm run generate && gh-pages -d .output/public",
+    "deploy": "npm run generate && gh-pages --dotfiles -d .output/public",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

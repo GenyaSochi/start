@@ -27,7 +27,7 @@
         <div v-else class="cart-body">
           <div class="cart-items">
             <div v-for="item in cart.items" :key="item.product_id" class="cart-item">
-              <img :src="item.image_url" :alt="item.name" class="item-img" />
+              <img :src="'/start/'+item.image_url" :alt="item.name" class="item-img" />
               <div class="item-info">
                 <h4>{{ item.name }}</h4>
                 <p class="item-weight">{{ item.weight }} г</p>
@@ -166,6 +166,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useCart } from '~/composables/useCart'
+import { getOrCreateCart, getCartSummary } from '~/helpers/cart-engine';
 
 defineProps<{ open: boolean }>()
 
@@ -238,7 +239,8 @@ async function startCheckout() {
   checkoutError.value = ''
   try {
     // Проверка актуальных остатков на сервере
-    const freshCart = await $fetch(`/api/v1/cart?cart_id=${cart.value.cart_id}`) as any
+    const cart1 = getOrCreateCart(cart.value.cart_id)
+    const freshCart = getCartSummary(cart1)
     const unavailable = freshCart.items.filter((i: any) => !i.is_available)
     if (unavailable.length > 0) {
       checkoutError.value = `Товары недоступны: ${unavailable.map((i: any) => i.name).join(', ')}. Удалите их из корзины.`

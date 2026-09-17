@@ -11,7 +11,21 @@ export default defineNuxtConfig({
     baseURL: '/start/',
     buildAssetsDir: '/assets/',
     head: {
-      viewport: 'width=device-width, initial-scale=1, maximum-scale=5'
+      title: 'Сытый самурай', // default fallback title
+      htmlAttrs: {
+        lang: 'ru',
+      },
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/start/favicon.ico' },
+      ],
+      viewport: 'width=device-width, initial-scale=1.0, shrink-to-fit=no'
+    },
+    
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/'],
     }
   }
 })

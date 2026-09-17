@@ -1,7 +1,7 @@
 <template>
   <article class="product-card" :class="{ unavailable: !product.is_available }">
     <div class="card-image" @click="$emit('open', product)">
-      <img :src="product.image_url" :alt="product.name" />
+      <img :src="'/start/'+product.image_url" :alt="product.name" />
       <div class="badges">
         <span v-if="product.is_hit" class="badge hit">Хит</span>
         <span v-if="product.is_new" class="badge new">Новинка</span>
