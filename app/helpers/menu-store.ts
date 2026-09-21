@@ -1,4 +1,3 @@
-import { join } from 'path'
 import type { Product, Category } from '../../shared/types/sushi'
 import { products as seedProducts, categories as seedCategories } from './data/menu'
 

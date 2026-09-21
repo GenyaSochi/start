@@ -1,5 +1,5 @@
-import { getProducts } from '../../../utils/menu-store'
+// import { getProducts } from '../../../utils/menu-store'
 
-export default defineEventHandler(() => {
-  return getProducts()
-})
+// export default defineEventHandler(() => {
+//   return getProducts()
+// })
