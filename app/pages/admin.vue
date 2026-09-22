@@ -2,11 +2,15 @@
   <div class="admin-page">
     <h1 class="admin-title">Личный кабинет</h1>
     <p class="admin-subtitle">Управление товарами меню</p>
+    <p class="admin-note">Изменения сохраняются локально в вашем браузере</p>
 
     <div v-if="pending" class="loading">Загрузка...</div>
 
     <div v-else class="admin-content">
-      <button class="add-btn-top" @click="startAdd">+ Добавить товар</button>
+      <div class="admin-actions">
+        <button class="add-btn-top" @click="startAdd">+ Добавить товар</button>
+        <button class="reset-btn" @click="handleReset">Сбросить к умолчанию</button>
+      </div>
 
       <div class="products-table">
         <div class="table-header">
@@ -84,6 +88,7 @@
               <div class="field">
                 <label>URL изображения</label>
                 <input v-model="form.image_url" type="text" placeholder="/img/..." />
+                <img v-if="form.image_url" :src="'/start/' + form.image_url" class="image-preview" alt="Превью" />
               </div>
 
               <div class="field-row">
@@ -113,6 +118,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Product, Category } from '~/../../shared/types/sushi'
+import { getProducts, getCategories, addProduct, updateProduct, deleteProduct, resetToDefaults } from '~/helpers/menu-store'
 
 const products = ref<Product[]>([])
 const categories = ref<Category[]>([])
@@ -138,15 +144,11 @@ const emptyForm = (): Omit<Product, 'id'> => ({
 
 const form = ref(emptyForm())
 
-async function loadData() {
+function loadData() {
   pending.value = true
   try {
-    const [prods, cats] = await Promise.all([
-      $fetch<Product[]>('/api/v1/admin/products'),
-      $fetch<Category[]>('/api/v1/categories')
-    ])
-    products.value = prods
-    categories.value = cats
+    products.value = [...getProducts()]
+    categories.value = [...getCategories()]
   } catch (e) {
     console.error('Failed to load admin data:', e)
   } finally {
@@ -184,7 +186,7 @@ function startEdit(product: Product) {
   showModal.value = true
 }
 
-async function saveProduct() {
+function saveProduct() {
   saving.value = true
   try {
     const payload = {
@@ -194,28 +196,34 @@ async function saveProduct() {
     }
 
     if (isAdding.value) {
-      await $fetch('/api/v1/admin/products', { method: 'POST', body: payload })
+      addProduct(payload)
     } else if (editingId.value) {
-      await $fetch(`/api/v1/admin/products/${editingId.value}`, { method: 'PUT', body: payload })
+      updateProduct(editingId.value, payload)
     }
 
     showModal.value = false
-    await loadData()
+    loadData()
   } catch (e: any) {
-    alert(e?.data?.message || e?.message || 'Ошибка сохранения')
+    alert(e?.message || 'Ошибка сохранения')
   } finally {
     saving.value = false
   }
 }
 
-async function removeProduct(id: number) {
+function removeProduct(id: number) {
   if (!confirm('Удалить этот товар?')) return
   try {
-    await $fetch(`/api/v1/admin/products/${id}`, { method: 'DELETE' })
-    await loadData()
+    deleteProduct(id)
+    loadData()
   } catch (e: any) {
-    alert(e?.data?.message || 'Ошибка удаления')
+    alert(e?.message || 'Ошибка удаления')
   }
+}
+
+function handleReset() {
+  if (!confirm('Сбросить все изменения и вернуть меню по умолчанию?')) return
+  resetToDefaults()
+  loadData()
 }
 
 onMounted(loadData)
@@ -239,8 +247,15 @@ onMounted(loadData)
 
 .admin-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  margin: 0 0 2rem;
+  margin: 0 0 0.5rem;
   font-family: 'Manrope', sans-serif;
+}
+
+.admin-note {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.8rem;
+  font-family: 'Manrope', sans-serif;
+  margin: 0 0 2rem;
 }
 
 .loading {
@@ -248,6 +263,13 @@ onMounted(loadData)
   padding: 4rem;
   color: rgba(255, 255, 255, 0.5);
   font-family: 'Manrope', sans-serif;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .add-btn-top {
@@ -260,13 +282,30 @@ onMounted(loadData)
   font-weight: 700;
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
-  margin-bottom: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .add-btn-top:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(255, 77, 77, 0.4);
+}
+
+.reset-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .products-table {
@@ -458,6 +497,15 @@ onMounted(loadData)
   font-size: 0.85rem;
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
+}
+
+.image-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .save-btn {
