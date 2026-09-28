@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  sortOrder Int
+  products  Product[]
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  price       Int
+  oldPrice    Int?
+  weight      Int
+  imageUrl    String
+  categoryId  Int
+  category    Category   @relation(fields: [categoryId], references: [id])
+  isAvailable Boolean    @default(true)
+  spiciness   Int?
+  isNew       Boolean    @default(false)
+  isHit       Boolean    @default(false)
+  cartItems   CartItem[]
+}
+
+model PromoCode {
+  id              Int    @id @default(autoincrement())
+  code            String @unique
+  discountPercent Int?
+  discountFixed   Int?
+  description     String
+  minSum          Int    @default(0)
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  passwordHash String
+  sessions     Session[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+}
+
+model Cart {
+  id        String     @id
+  promoCode String?
+  items     CartItem[]
+}
+
+model CartItem {
+  cartId     String
+  productId  Int
+  quantity   Int
+  priceFixed Int
+  cart       Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id])
+
+  @@id([cartId, productId])
+}

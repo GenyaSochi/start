@@ -50,13 +50,16 @@
 import { ref, computed, onMounted } from 'vue'
 import type { Product, Category } from '~/../../shared/types/sushi'
 import { useCart } from '~/composables/useCart'
-import { getProducts, getCategories } from '~/helpers/menu-store'
+import { useMenu } from '~/composables/useMenu'
 
 const { cart, itemCount, fetchCart, addProduct, updateQuantity, removeProduct, getItemQuantity } = useCart()
+const { products, categories, sortedCategories } = useMenu()
 
-const categories = ref<Category[]>([])
-const products = ref<Product[]>([])
-const pending = ref(true)
+// await fetchMenu()
+// await fetchCart()
+// await loadData()
+
+const pending = ref(false)
 const activeCategory = ref('all')
 const sort = ref('popular')
 const filters = ref({
@@ -70,7 +73,7 @@ const selectedProduct = ref<Product | null>(null)
 const cartOpen = ref(false)
 
 const filteredProducts = computed(() => {
-  let list = [...products.value]
+  let list = [...products.value] as Product[]
 
   if (activeCategory.value !== 'all') {
     const cat = categories.value.find(c => c.slug === activeCategory.value)
@@ -109,13 +112,9 @@ const filteredProducts = computed(() => {
 })
 
 async function loadData() {
-  const categs = getCategories()
-  const cats = [...categs].sort((a, b) => a.sort_order - b.sort_order)
-  const prods = getProducts()
-  categories.value = [{ id: 0, name: 'Все', slug: 'all', sort_order: 0 }, ...cats]
-  products.value = prods
   pending.value = true
   try {
+    categories.value = [{ id: 0, name: 'Все', slug: 'all', sort_order: 0 }, ...sortedCategories.value]
   } catch (e) {
     console.error('Failed to load menu:', e)
   } finally {
@@ -166,10 +165,6 @@ function openModal(product: Product) {
   selectedProduct.value = product
 }
 
-onMounted(async () => {
-  await loadData()
-  await fetchCart()
-})
 </script>
 
 <style scoped>

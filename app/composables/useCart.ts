@@ -1,5 +1,4 @@
 import { ref, computed, readonly } from 'vue'
-import { getOrCreateCart, getCartSummary, updateCartItem as uci, addToCart as atc, applyPromo as ap, removeFromCart as rfc, clearCart as cc} from '~/helpers/cart-engine'
 
 const CART_ID_KEY = 'sushi_cart_id'
 
@@ -37,21 +36,22 @@ const emptyCart: CartSummary = {
   total: 0,
   total_weight: 0,
   min_order_diff: 0,
-  promocode: null
+  promocode: null,
 }
 
 const cart = ref<CartSummary>({ ...emptyCart })
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-function getCartId(): string {
-  if (import.meta.server) return ''
-  let id = localStorage.getItem(CART_ID_KEY)
-  if (!id) {
-    id = `cart_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+function getCartId(): string | null {
+  if (import.meta.server) return null
+  return localStorage.getItem(CART_ID_KEY)
+}
+
+function saveCartId(id: string) {
+  if (import.meta.client) {
     localStorage.setItem(CART_ID_KEY, id)
   }
-  return id
 }
 
 async function apiCall(url: string, options?: RequestInit): Promise<CartSummary> {
@@ -60,8 +60,8 @@ async function apiCall(url: string, options?: RequestInit): Promise<CartSummary>
   try {
     const data = await $fetch<CartSummary>(url, options as any)
     cart.value = data
-    if (import.meta.client && data.cart_id) {
-      localStorage.setItem(CART_ID_KEY, data.cart_id)
+    if (data.cart_id) {
+      saveCartId(data.cart_id)
     }
     return data
   } catch (e: any) {
@@ -77,63 +77,57 @@ export function useCart() {
   const itemCount = computed(() => cart.value.items.reduce((sum, i) => sum + i.quantity, 0))
   const isEmpty = computed(() => cart.value.items.length === 0)
 
-  async function fetchCart() {
-    const cartId = getCartId()
-    if (!cartId) return
-    const cart1 = getOrCreateCart(cartId)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
+  async function ensureCartId(): Promise<string> {
+    let cartId = getCartId()
+    if (!cartId) {
+      const data = await $fetch<{ cart_id: string }>('/api/cart', { method: 'POST' })
+      cartId = data.cart_id
+      saveCartId(cartId)
     }
+    return cartId
+  }
+
+  async function fetchCart() {
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}`)
   }
 
   async function addProduct(productId: number, quantity = 1) {
-    const cartId = getCartId()      
-    const cart1 = atc(cartId || '', productId, quantity)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
-    }
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}/items`, {
+      method: 'POST',
+      body: { productId, quantity },
+    })
   }
 
   async function updateQuantity(productId: number, quantity: number) {
-    const cartId = getCartId()
-    const cart1 = uci(cartId, productId, quantity)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
-    }
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}/items/${productId}`, {
+      method: 'PATCH',
+      body: { quantity },
+    })
   }
 
   async function removeProduct(productId: number) {
-    const cartId = getCartId()
-    const cart1 = rfc(cartId, productId)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
-    }
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}/items/${productId}`, { method: 'DELETE' })
   }
 
   async function applyPromo(code: string) {
-    const cartId = getCartId()
-    const cart1 = ap(cartId, code)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
-    }
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}/promo`, {
+      method: 'POST',
+      body: { code },
+    })
   }
 
   async function clearCart() {
-    const cartId = getCartId()
-    const cart1 = cc(cartId)
-    cart.value = getCartSummary(cart1)
-    if (import.meta.client && cartId) {
-      localStorage.setItem(CART_ID_KEY, cartId)
-    }
+    const cartId = await ensureCartId()
+    return apiCall(`/api/cart/${cartId}`, { method: 'DELETE' })
   }
 
   function getItemQuantity(productId: number): number {
-    const item = cart.value.items.find(i => i.product_id === productId)
+    const item = cart.value.items.find((i) => i.product_id === productId)
     return item ? item.quantity : 0
   }
 
@@ -149,6 +143,6 @@ export function useCart() {
     removeProduct,
     applyPromo,
     clearCart,
-    getItemQuantity
+    getItemQuantity,
   }
 }

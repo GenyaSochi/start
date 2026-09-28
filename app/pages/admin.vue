@@ -2,17 +2,38 @@
   <div class="admin-page">
     <h1 class="admin-title">Личный кабинет</h1>
     <p class="admin-subtitle">Управление товарами меню</p>
-    <p class="admin-note">Изменения сохраняются локально в вашем браузере</p>
 
-    <div v-if="pending" class="loading">Загрузка...</div>
+    <!-- Экран логина -->
+    <div v-if="!authChecked" class="loading">Проверка сессии...</div>
+
+    <div v-else-if="!isAuthenticated" class="login-block">
+      <h2>Вход в админку</h2>
+      <form class="login-form" @submit.prevent="doLogin">
+        <div class="field">
+          <label>Логин</label>
+          <input v-model="loginForm.username" type="text" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label>Пароль</label>
+          <input v-model="loginForm.password" type="password" required autocomplete="current-password" />
+        </div>
+        <p v-if="loginError" class="login-error">{{ loginError }}</p>
+        <button type="submit" class="save-btn" :disabled="loggingIn">
+          {{ loggingIn ? 'Вход...' : 'Войти' }}
+        </button>
+      </form>
+    </div>
 
     <div v-else class="admin-content">
       <div class="admin-actions">
         <button class="add-btn-top" @click="startAdd">+ Добавить товар</button>
         <button class="reset-btn" @click="handleReset">Сбросить к умолчанию</button>
+        <button class="reset-btn" @click="doLogout">Выйти</button>
       </div>
 
-      <div class="products-table">
+      <div v-if="pending" class="loading">Загрузка...</div>
+
+      <div v-else class="products-table">
         <div class="table-header">
           <span class="col-id">ID</span>
           <span class="col-name">Название</span>
@@ -118,7 +139,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { Product, Category } from '~/../../shared/types/sushi'
-import { getProducts, getCategories, addProduct, updateProduct, deleteProduct, resetToDefaults } from '~/helpers/menu-store'
 
 const products = ref<Product[]>([])
 const categories = ref<Category[]>([])
@@ -127,6 +147,12 @@ const showModal = ref(false)
 const saving = ref(false)
 const isAdding = ref(false)
 const editingId = ref<number | null>(null)
+
+const authChecked = ref(false)
+const isAuthenticated = ref(false)
+const loggingIn = ref(false)
+const loginError = ref('')
+const loginForm = ref({ username: '', password: '' })
 
 const emptyForm = (): Omit<Product, 'id'> => ({
   name: '',
@@ -139,25 +165,71 @@ const emptyForm = (): Omit<Product, 'id'> => ({
   is_available: true,
   spiciness: 0,
   is_new: false,
-  is_hit: false
+  is_hit: false,
 })
 
 const form = ref(emptyForm())
 
-function loadData() {
+async function checkAuth() {
+  authChecked.value = false
+  try {
+    await $fetch('/api/auth/me')
+    isAuthenticated.value = true
+    await loadData()
+  } catch {
+    isAuthenticated.value = false
+  } finally {
+    authChecked.value = true
+    pending.value = false
+  }
+}
+
+async function doLogin() {
+  loggingIn.value = true
+  loginError.value = ''
+  try {
+    await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: loginForm.value,
+    })
+    isAuthenticated.value = true
+    pending.value = true
+    await loadData()
+  } catch (e: any) {
+    loginError.value = e?.data?.message || 'Ошибка входа'
+  } finally {
+    loggingIn.value = false
+  }
+}
+
+async function doLogout() {
+  try {
+    await $fetch('/api/auth/logout', { method: 'POST' })
+  } catch {}
+  isAuthenticated.value = false
+  products.value = []
+  categories.value = []
+}
+
+async function loadData() {
   pending.value = true
   try {
-    products.value = [...getProducts()]
-    categories.value = [...getCategories()]
-  } catch (e) {
-    console.error('Failed to load admin data:', e)
+    const data = await $fetch<{ products: Product[]; categories: Category[] }>('/api/admin/products')
+    products.value = data.products
+    categories.value = data.categories
+  } catch (e: any) {
+    if (e?.statusCode === 401) {
+      isAuthenticated.value = false
+    } else {
+      alert(e?.data?.message || 'Ошибка загрузки')
+    }
   } finally {
     pending.value = false
   }
 }
 
 function getCategoryName(id: number): string {
-  return categories.value.find(c => c.id === id)?.name || `#${id}`
+  return categories.value.find((c) => c.id === id)?.name || `#${id}`
 }
 
 function startAdd() {
@@ -181,52 +253,56 @@ function startEdit(product: Product) {
     is_available: product.is_available,
     spiciness: product.spiciness,
     is_new: product.is_new,
-    is_hit: product.is_hit
+    is_hit: product.is_hit,
   }
   showModal.value = true
 }
 
-function saveProduct() {
+async function saveProduct() {
   saving.value = true
   try {
     const payload = {
       ...form.value,
       old_price: form.value.old_price || null,
-      spiciness: form.value.spiciness || null
+      spiciness: form.value.spiciness != null ? form.value.spiciness : null,
     }
 
     if (isAdding.value) {
-      addProduct(payload)
+      await $fetch('/api/admin/products', { method: 'POST', body: payload })
     } else if (editingId.value) {
-      updateProduct(editingId.value, payload)
+      await $fetch(`/api/admin/products/${editingId.value}`, { method: 'PATCH', body: payload })
     }
 
     showModal.value = false
-    loadData()
+    await loadData()
   } catch (e: any) {
-    alert(e?.message || 'Ошибка сохранения')
+    alert(e?.data?.message || 'Ошибка сохранения')
   } finally {
     saving.value = false
   }
 }
 
-function removeProduct(id: number) {
+async function removeProduct(id: number) {
   if (!confirm('Удалить этот товар?')) return
   try {
-    deleteProduct(id)
-    loadData()
+    await $fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+    await loadData()
   } catch (e: any) {
-    alert(e?.message || 'Ошибка удаления')
+    alert(e?.data?.message || 'Ошибка удаления')
   }
 }
 
-function handleReset() {
+async function handleReset() {
   if (!confirm('Сбросить все изменения и вернуть меню по умолчанию?')) return
-  resetToDefaults()
-  loadData()
+  try {
+    await $fetch('/api/admin/reset', { method: 'POST' })
+    await loadData()
+  } catch (e: any) {
+    alert(e?.data?.message || 'Ошибка сброса')
+  }
 }
 
-onMounted(loadData)
+onMounted(checkAuth)
 </script>
 
 <style scoped>
@@ -251,17 +327,38 @@ onMounted(loadData)
   font-family: 'Manrope', sans-serif;
 }
 
-.admin-note {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 0.8rem;
-  font-family: 'Manrope', sans-serif;
-  margin: 0 0 2rem;
-}
-
 .loading {
   text-align: center;
   padding: 4rem;
   color: rgba(255, 255, 255, 0.5);
+  font-family: 'Manrope', sans-serif;
+}
+
+.login-block {
+  max-width: 400px;
+  margin: 3rem auto;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.login-block h2 {
+  margin: 0 0 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: 'Manrope', sans-serif;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-error {
+  color: #f44336;
+  font-size: 0.85rem;
+  margin: 0;
   font-family: 'Manrope', sans-serif;
 }
 

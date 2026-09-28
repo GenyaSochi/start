@@ -166,7 +166,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useCart } from '~/composables/useCart'
-import { getOrCreateCart, getCartSummary } from '~/helpers/cart-engine';
 
 defineProps<{ open: boolean }>()
 
@@ -238,10 +237,8 @@ async function startCheckout() {
   checkingOut.value = true
   checkoutError.value = ''
   try {
-    // Проверка актуальных остатков на сервере
-    const cart1 = getOrCreateCart(cart.value.cart_id)
-    const freshCart = getCartSummary(cart1)
-    const unavailable = freshCart.items.filter((i: any) => !i.is_available)
+    // Проверка актуальных остатков на сервере (корзина уже синхронизирована)
+    const unavailable = cart.value.items.filter((i) => !i.is_available)
     if (unavailable.length > 0) {
       checkoutError.value = `Товары недоступны: ${unavailable.map((i: any) => i.name).join(', ')}. Удалите их из корзины.`
       checkingOut.value = false
