@@ -12,6 +12,7 @@
         <h4>Навигация</h4>
         <NuxtLink to="/">Главная</NuxtLink>
         <NuxtLink to="/menu">Меню</NuxtLink>
+        <NuxtLink to="/admin">Админ</NuxtLink>
       </div>
       <div class="footer-col">
         <h4>Контакты</h4>
